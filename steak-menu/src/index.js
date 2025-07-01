@@ -14,21 +14,21 @@ const steakData = [
     name: "Filet Mignon",
     ingredients: "Filet mignon, rosemary, olive oil, sea salt",
     price: 38,
-    photoName: "filet-mignon.jpg",
+    photoName: "assets/img/filet-mignon.png",
     soldOut: false,
   },
   {
     name: "T-Bone Steak",
     ingredients: "T-bone steak, cracked pepper, herb butter",
     price: 35,
-    photoName: "tbone.jpg",
+    photoName: "assets/img/tbone.png",
     soldOut: true,
   },
   {
     name: "Sirloin Special",
     ingredients: "Sirloin steak, house marinade, grilled onions",
     price: 28,
-    photoName: "sirloin.jpg",
+    photoName: "assets/img/sirloin.png",
     soldOut: false,
   },
   {
@@ -59,35 +59,33 @@ function Header() {
 }
 
 function Menu() {
+  const steaks = steakData;
+
   return (
     <div className="menu">
       <h2 className="our-menu">OUR MENU</h2>
-      <div className="menu-container">
-        <Steak
-          name="Porterhouse Feast"
-          ingredients="Porterhouse steak, smoked salt, thyme"
-          price={42}
-          photoName="assets/img/porterhouse.png"
-        />
-        <Steak
-          name="Classic Ribeye"
-          ingredients="Ribeye steak, salt, pepper, garlic butter"
-          price={32}
-          photoName="assets/img/ribeye.png"
-        />
-      </div>
+      <p>We declaring a war to vegan with our meat!!!!</p>
+      {steaks ? (
+        <div className="menu-container">
+          {steaks.map((steak) => (
+            <Steak steakObj={steak} key={steak.name} />
+          ))}
+        </div>
+      ) : (
+        <p>Work in progress</p>
+      )}
     </div>
   );
 }
 
-function Steak(props) {
+function Steak({ steakObj }) {
   return (
-    <div className="steak-card">
-      <img src={props.photoName} alt={props.name} className="steak-img" />
+    <div className={`steak-card ${steakObj.soldOut ? "sold-out" : ""}`}>
+      <img src={steakObj.photoName} alt={steakObj.name} className="steak-img" />
       <div className="steak-card-text">
-        <h2>{props.name}</h2>
-        <h3>{props.ingredients}</h3>
-        <h3>{props.price}</h3>
+        <h2>{steakObj.name}</h2>
+        <h3>{steakObj.ingredients}</h3>
+        <h3>{steakObj.soldOut ? "SOLD OUT" : steakObj.price}</h3>
       </div>
     </div>
   );
@@ -101,9 +99,21 @@ function Footer() {
 
   return (
     <footer className="footer">
-      It's {hour} O'clock.{" "}
-      {isOpen ? "We're currently Open" : "Sorry, We're closed"}
+      {isOpen ? (
+        <Order closeHour={closeHour} />
+      ) : (
+        <p>Why are you craving steak in this hour?</p>
+      )}
     </footer>
+  );
+}
+
+function Order({ closeHour }) {
+  return (
+    <div>
+      <p>We're open until {closeHour}:00. Come visit us or order online.</p>
+      <button className="btn">Order</button>
+    </div>
   );
 }
 

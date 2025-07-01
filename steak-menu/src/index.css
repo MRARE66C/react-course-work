@@ -48,6 +48,10 @@ body {
   align-items: center;
 }
 
+.sold-out {
+  filter: grayscale(75%);
+}
+
 footer {
   display: flex;
   flex-direction: column;
